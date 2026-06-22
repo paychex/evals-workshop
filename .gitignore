@@ -30,3 +30,6 @@ env/
 
 # --- Workshop scratch ---
 .demo_state.json
+
+# --- Facilitator-only notes (not for public sharing) ---
+FACILITATOR.md
