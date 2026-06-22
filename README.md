@@ -113,34 +113,6 @@ Each prints a link/name to open the experiment (or project) in LangSmith.
 
 ---
 
-## Suggested agenda
-
-### Session 1 — Foundations (~half day)
-
-| Time | Segment |
-|------|---------|
-| 0:00 | **Why evaluate?** + the 4 moving parts (Module 1) |
-| 0:30 | **Single-turn evals** — deterministic vs. LLM-judge; hands-on (Module 2) |
-| 1:30 | *break* |
-| 1:45 | **Agent evals** — trajectory & tools; hands-on (Module 3) |
-| 2:45 | **Evals in CI** — gating patterns, thresholds; hands-on (Module 4) |
-| 3:30 | 🗣️ **Live discussion** — how we run evals in CI internally + partner stories (see Module 4 README) |
-| 4:00 | Q&A / map to your own services |
-
-### Session 2 — Evals for Production (~half day)
-
-| Time | Segment |
-|------|---------|
-| 0:00 | **Experiments vs. tracing** — offline vs. online; reference-free evals; the flywheel (Module 5) |
-| 0:45 | **Online-eval loop** — score live traces, write feedback; hands-on (Module 5) |
-| 1:30 | *break* |
-| 1:45 | **Improving evals** — annotation queues, evaluating the evaluator, few-shot alignment; hands-on (Module 6) |
-| 2:45 | **Production monitoring** — scheduled drift gate, baselines, LangSmith monitors/rules; hands-on (Module 7) |
-| 3:30 | 🗣️ **Live discussion** — online evals + alerting in our own stack; sampling & cost |
-| 4:00 | Q&A / design the eval loop for your own service |
-
----
-
 ## Repo map
 
 ```
