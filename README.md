@@ -130,14 +130,3 @@ module_7_production_ci/    # scheduled drift monitor + baseline
 .github/workflows/online-evals.yml  # online monitor (scheduled)
 config.py                  # model + LangSmith config (one place to swap providers)
 ```
-
-## Notes for facilitators
-
-- Datasets are created **idempotently** from code on first run — no manual
-  setup in the LangSmith UI.
-- We build evaluators by hand for clarity. In production, reach for
-  [`openevals`](https://github.com/langchain-ai/openevals), which ships
-  ready-made correctness/groundedness/trajectory evaluators.
-- Want to *demonstrate a regression*? Weaken `hr_agent/agent.py`'s system
-  prompt (e.g. remove the "always call lookup_hr_policy" line), re-run Module 2,
-  and watch `groundedness` drop — then show the CI gate catching it.
