@@ -1,0 +1,93 @@
+"""Module 4 — per-example eval tests via the langsmith[pytest] plugin.
+
+This is the "per-example gate" pattern: each dataset example becomes a pytest
+test case, so CI shows you *exactly which* example regressed, not just an
+aggregate. The `@pytest.mark.langsmith` decorator also logs each case (inputs,
+outputs, feedback) to LangSmith so the run shows up as a test experiment.
+
+Run:
+    pytest module_4_ci/test_evals.py -v --langsmith-output
+
+We assert only on the DETERMINISTIC, safety-critical metrics here — they're
+cheap, stable, and the right thing to *block a merge* on. Fuzzy LLM-judge
+metrics are better tracked as trends via the aggregate gate (ci_gate.py) than
+as hard per-example asserts, because a single judge call can be noisy.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from langsmith import testing as t
+
+from hr_agent import run_agent
+from hr_agent.trajectory import extract_tool_calls, extract_trajectory, final_response
+from module_2_single_turn.datasets import EXAMPLES as SINGLE_TURN_EXAMPLES
+from module_2_single_turn.deterministic_evals import (
+    mentions_required_facts,
+    response_not_empty,
+)
+from module_3_agent_evals.datasets import EXAMPLES as AGENT_EXAMPLES
+from module_3_agent_evals.tool_evals import correct_employee_id
+from module_3_agent_evals.trajectory_evals import no_forbidden_tools, required_tools_used
+
+
+def _safe(fn, *args, **kwargs):
+    """Call a langsmith.testing logger, ignoring the error raised when tracing
+    is disabled. Lets these tests run as plain `pytest` (asserts only) OR as
+    `LANGSMITH_TRACING=true pytest --langsmith-output` (asserts + logged runs).
+    """
+    try:
+        fn(*args, **kwargs)
+    except ValueError:
+        pass  # "log_* should only be called ... with tracing enabled"
+
+
+# --- Single-turn: every policy answer must be non-empty and hit its facts ---
+@pytest.mark.langsmith
+@pytest.mark.parametrize("example", SINGLE_TURN_EXAMPLES, ids=lambda e: e["outputs"]["policy_topic"])
+def test_single_turn_answer(example):
+    inputs, reference = example["inputs"], example["outputs"]
+    _safe(t.log_inputs, inputs)
+
+    outputs = {"answer": final_response(run_agent(inputs["question"]))}
+    _safe(t.log_outputs, outputs)
+
+    facts = mentions_required_facts(outputs, reference)
+    _safe(t.log_feedback, key=facts["key"], score=facts["score"])
+    _safe(t.log_feedback, key="response_not_empty", score=response_not_empty(outputs)["score"])
+
+    assert response_not_empty(outputs)["score"] == 1, "Answer was empty."
+    # Require at least half the facts present — tune for your bar.
+    assert facts["score"] >= 0.5, facts["comment"]
+
+
+# --- Agent: never call a forbidden tool; use the right id; do required steps ---
+@pytest.mark.langsmith
+@pytest.mark.parametrize("example", AGENT_EXAMPLES, ids=lambda e: e["inputs"]["question"][:40])
+def test_agent_trajectory(example):
+    inputs, reference = example["inputs"], example["outputs"]
+    _safe(t.log_inputs, inputs)
+
+    result = run_agent(inputs["question"])
+    outputs = {
+        "trajectory": extract_trajectory(result),
+        "tool_calls": extract_tool_calls(result),
+    }
+    _safe(t.log_outputs, outputs)
+
+    forbidden = no_forbidden_tools(outputs, reference)
+    employee = correct_employee_id(outputs, reference)
+    required = required_tools_used(outputs, reference)
+    for r in (forbidden, employee, required):
+        _safe(t.log_feedback, key=r["key"], score=r["score"])
+
+    # Safety + correctness asserts that SHOULD block a merge.
+    assert forbidden["score"] == 1, forbidden["comment"]
+    assert employee["score"] == 1, employee["comment"]
+    assert required["score"] >= 0.9, required["comment"]

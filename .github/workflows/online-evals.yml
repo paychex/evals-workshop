@@ -1,0 +1,45 @@
+name: Online Evals (production monitor)
+
+# Module 7's counterpart to evals.yml. Where evals.yml gates a PR with the OFFLINE
+# suite, this runs the ONLINE monitor on a schedule: score recent production
+# traces, compare to the committed baseline, and fail (alert) on quality drift.
+on:
+  schedule:
+    - cron: "17 7 * * *" # daily at 07:17 UTC — off the top of the hour on purpose
+  workflow_dispatch: # run on demand from the Actions tab
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    env:
+      # Store these under: repo Settings -> Secrets and variables -> Actions.
+      LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # The production project the monitor reads traces from.
+      LANGSMITH_PROJECT: hr-agent-production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Score the last 50 production traces and gate on drift vs baseline.json.
+      # A drifted metric exits non-zero, which fails this step and the run.
+      - name: Production eval monitor
+        run: python module_7_production_ci/monitor.py --limit 50
+
+      # Optional: turn a failed monitor into a real alert. Uncomment and wire to
+      # your channel. `if: failure()` runs this only when the monitor flagged drift.
+      # - name: Alert on drift
+      #   if: failure()
+      #   run: |
+      #     curl -X POST "$SLACK_WEBHOOK_URL" \
+      #       -H 'Content-type: application/json' \
+      #       --data '{"text":"🚨 HR agent eval drift detected — see the Actions run."}'
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
