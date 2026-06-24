@@ -33,12 +33,12 @@ that watches live traffic over time.
 
 ```bash
 # Check the last 50 production traces against baseline.json.
-python module_7_production_ci/monitor.py
+uv run python module_7_production_ci/monitor.py
 #   --deterministic-only   skip LLM judges (no model cost)
 #   --limit 100            score more traces
 
 # Recapture the baseline after an intentional, reviewed quality change.
-python module_7_production_ci/monitor.py --write-baseline
+uv run python module_7_production_ci/monitor.py --write-baseline
 ```
 
 (Generate traffic first with `module_5_online_evals/production_traffic.py` if the

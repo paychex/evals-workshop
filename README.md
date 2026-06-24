@@ -66,16 +66,26 @@ meaningful — you measure the *model's* behavior, not flaky downstream systems.
 
 ## Setup
 
+This project uses [`uv`](https://docs.astral.sh/uv/) for environment and
+dependency management. The `--system-certs` flag tells uv to load TLS
+certificates from the platform's native certificate store (useful behind a
+corporate proxy / TLS-inspecting firewall).
+
 ```bash
-# 1. Python 3.10+ and a virtualenv
-python -m venv .venv && source .venv/bin/activate
+# 1. Create a virtualenv (Python 3.10+) and install dependencies
+uv sync --system-certs
 
-# 2. Install
-pip install -r requirements.txt
-
-# 3. Configure keys
+# 2. Configure keys
 cp .env.example .env      # then edit: LANGSMITH_API_KEY + ANTHROPIC_API_KEY
 ```
+
+> Tip: set `export UV_SYSTEM_CERTS=1` once in your shell to avoid passing
+> `--system-certs` on every command. To also install the OpenAI provider, run
+> `uv sync --system-certs --extra openai`.
+
+Run any command in the project environment by prefixing it with `uv run`
+(uv resolves and syncs the env automatically), e.g.
+`uv run python module_1_fundamentals/01_first_eval.py`.
 
 You need:
 - a **LangSmith API key** (smith.langchain.com → Settings → API Keys), and
@@ -87,26 +97,26 @@ You need:
 The deterministic evaluators self-test as pure functions:
 
 ```bash
-python module_2_single_turn/deterministic_evals.py
-python module_3_agent_evals/trajectory_evals.py
-python module_3_agent_evals/tool_evals.py
-python module_5_online_evals/reference_free_evals.py
+uv run python module_2_single_turn/deterministic_evals.py
+uv run python module_3_agent_evals/trajectory_evals.py
+uv run python module_3_agent_evals/tool_evals.py
+uv run python module_5_online_evals/reference_free_evals.py
 ```
 
 ### Run a module (keys needed)
 
 ```bash
 # Session 1 — offline experiments
-python module_1_fundamentals/01_first_eval.py
-python module_2_single_turn/run_eval.py
-python module_3_agent_evals/run_eval.py
-python module_4_ci/ci_gate.py --suite agent
+uv run python module_1_fundamentals/01_first_eval.py
+uv run python module_2_single_turn/run_eval.py
+uv run python module_3_agent_evals/run_eval.py
+uv run python module_4_ci/ci_gate.py --suite agent
 
 # Session 2 — production evals
-python module_5_online_evals/production_traffic.py   # create live traces
-python module_5_online_evals/score_traces.py         # online-eval loop
-python module_6_improving_evals/judge_alignment.py   # zero-shot vs few-shot
-python module_7_production_ci/monitor.py             # drift vs baseline
+uv run python module_5_online_evals/production_traffic.py   # create live traces
+uv run python module_5_online_evals/score_traces.py         # online-eval loop
+uv run python module_6_improving_evals/judge_alignment.py   # zero-shot vs few-shot
+uv run python module_7_production_ci/monitor.py             # drift vs baseline
 ```
 
 Each prints a link/name to open the experiment (or project) in LangSmith.

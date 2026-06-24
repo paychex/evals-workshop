@@ -35,11 +35,11 @@ The loop that fixes this:
 
 ```bash
 # Measure judge↔human agreement, zero-shot vs few-shot (needs a model key).
-python module_6_improving_evals/judge_alignment.py
+uv run python module_6_improving_evals/judge_alignment.py
 
 # Push flagged production traces to an annotation queue for labeling.
 # (Run module_5_online_evals/production_traffic.py first to create traces.)
-python module_6_improving_evals/annotation_queue.py
+uv run python module_6_improving_evals/annotation_queue.py
 #   --all     queue recent traces, not just the flagged ones
 ```
 

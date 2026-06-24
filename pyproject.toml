@@ -1,0 +1,26 @@
+[project]
+name = "evals-workshop"
+version = "0.1.0"
+description = "Hands-on workshop on evaluating LLM applications with LangChain + LangSmith (HR Onboarding agent)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # Core LangChain + LangSmith (LangChain 1.0 LTS)
+    "langchain>=1.0,<2.0",
+    "langchain-core>=1.0,<2.0",
+    "langsmith[pytest]>=0.3.4",
+    # Model provider — Anthropic by default (swap/add as needed)
+    "langchain-anthropic>=1.0,<2.0",
+    # Workshop utilities
+    "python-dotenv>=1.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+# Uncomment-equivalent: `uv sync --extra openai` to use OpenAI models/judges.
+openai = ["langchain-openai>=1.0,<2.0"]
+
+[[tool.uv.index]]
+name = "artifactory"
+url = "https://repository.paychex.com/artifactory/api/pypi/pypi/simple"
+default = true

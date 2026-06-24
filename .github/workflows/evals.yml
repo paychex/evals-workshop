@@ -24,21 +24,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.11"
-          cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: uv sync --system-certs
 
       # --- Per-example gate: granular pass/fail, shows which example broke ---
       - name: Per-example eval tests
-        run: pytest module_4_ci/test_evals.py -v --langsmith-output
+        run: uv run pytest module_4_ci/test_evals.py -v --langsmith-output
 
       # --- Aggregate gate: dataset-level thresholds per metric ---
       - name: Single-turn aggregate gate
-        run: python module_4_ci/ci_gate.py --suite single_turn
+        run: uv run python module_4_ci/ci_gate.py --suite single_turn
 
       - name: Agent aggregate gate
-        run: python module_4_ci/ci_gate.py --suite agent
+        run: uv run python module_4_ci/ci_gate.py --suite agent
