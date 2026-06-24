@@ -1,0 +1,29 @@
+.env.example
+  s_1c1558b2b695c8::t_667a223b94b714 8-11,13-15,17-18,21
+hr_agent/agent.py
+  s_1c1558b2b695c8::t_60b060f8a7eeff 13
+  s_1c1558b2b695c8::t_597ff1e8510314 11,36
+  s_1c1558b2b695c8::t_4c6c90e36129a4 40
+pyproject.toml
+  s_1c1558b2b695c8::t_3e2409e3e94884 17,27
+  s_1c1558b2b695c8::t_b0d13ee13ce902 6
+config.py
+  s_1c1558b2b695c8::t_597ff1e8510314 45
+  s_1c1558b2b695c8::t_53b4c012a66585 22-27,47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "baac2ddecdd4419cf278d1b3a9e9836150b335e3",
+  "prompts": {},
+  "sessions": {
+    "s_1c1558b2b695c8": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "2e4f15a4-b361-4646-b040-10a9ed997eac",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "paychex-ssmithrand <ssmithrand@paychex.com>"
+    }
+  }
+}
