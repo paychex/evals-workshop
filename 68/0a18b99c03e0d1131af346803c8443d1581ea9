@@ -1,0 +1,39 @@
+module_3_agent_evals/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 37-38,41
+.github/workflows/evals.yml
+  s_1c1558b2b695c8::t_9afd0c96853b4e 27-28,33,37,41,44
+module_2_single_turn/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 25,28,31
+module_5_online_evals/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 59,62,65
+.github/workflows/online-evals.yml
+  s_1c1558b2b695c8::t_9afd0c96853b4e 23-24,29,34
+README.md
+  s_1c1558b2b695c8::t_7802bfecbc60c0 69-72,74-76,78,82-88
+  s_1c1558b2b695c8::t_8b420c08ad377d 100-103,110-113,116-119
+module_1_fundamentals/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 54
+module_6_improving_evals/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 38,42
+module_4_ci/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 23,26-27
+module_7_production_ci/README.md
+  s_1c1558b2b695c8::t_d32247f182b374 41
+  s_1c1558b2b695c8::t_352b1c9a1ee439 36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "680a18b99c03e0d1131af346803c8443d1581ea9",
+  "prompts": {},
+  "sessions": {
+    "s_1c1558b2b695c8": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "2e4f15a4-b361-4646-b040-10a9ed997eac",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "paychex-ssmithrand <ssmithrand@paychex.com>"
+    }
+  }
+}
