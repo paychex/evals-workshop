@@ -1,0 +1,33 @@
+module_2_single_turn/datasets.py
+  s_ea656df3ced9d0::t_caac37191797a6 11,19-20
+config.py
+  s_1c1558b2b695c8::t_a57de618684cae 14-24
+module_3_agent_evals/datasets.py
+  s_ea656df3ced9d0::t_caac37191797a6 11,19-20
+module_5_online_evals/project.py
+  s_ea656df3ced9d0::t_9fa57f1f4ed9e8 13-14,16-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "0c37c855512142d17080ca238cfc942ea9fb4c28",
+  "prompts": {},
+  "sessions": {
+    "s_1c1558b2b695c8": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "2e4f15a4-b361-4646-b040-10a9ed997eac",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "paychex-ssmithrand <ssmithrand@paychex.com>"
+    },
+    "s_ea656df3ced9d0": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "40168483-07a0-4a11-a528-a76315f2648c",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "paychex-ssmithrand <ssmithrand@paychex.com>"
+    }
+  }
+}
