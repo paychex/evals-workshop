@@ -8,9 +8,9 @@ model -> ...), which is exactly what we want to evaluate.
 
 from __future__ import annotations
 
-from langchain.agents import create_agent
+from aipe import create_payx_agent
 
-from config import AGENT_MODEL
+from config import AGENT_MODEL, MODEL_PROVIDER
 from hr_agent.tools import HR_TOOLS
 
 SYSTEM_PROMPT = """You are the HR Onboarding Assistant for a mid-size company.
@@ -33,10 +33,11 @@ Guidelines:
 
 def build_agent(model: str = AGENT_MODEL):
     """Construct the HR onboarding agent. Returns a compiled LangGraph app."""
-    return create_agent(
+    return create_payx_agent(
         model=model,
         tools=HR_TOOLS,
         system_prompt=SYSTEM_PROMPT,
+        model_kwargs={"model_provider": MODEL_PROVIDER},
     )
 
 
