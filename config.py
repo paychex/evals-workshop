@@ -11,6 +11,17 @@ from functools import lru_cache
 
 from dotenv import load_dotenv
 
+# Trust the platform's native certificate store at runtime (mirrors uv's
+# --system-certs). Without this, HTTPS clients that bundle their own CA list
+# (e.g. LangSmith via requests/certifi) fail with CERTIFICATE_VERIFY_FAILED
+# behind a corporate TLS-inspecting proxy. truststore ships with aipe.
+try:
+    import truststore
+
+    truststore.inject_into_ssl()
+except Exception:  # pragma: no cover - best effort; fall back to certifi
+    pass
+
 # Load .env once, on import, for every script in the workshop.
 # override=True makes the workshop's .env authoritative over ambient shell/IDE
 # environment variables. This matters because some shells/IDEs export keys like

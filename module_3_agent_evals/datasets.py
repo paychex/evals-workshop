@@ -8,6 +8,7 @@ called). This is what trajectory and tool evaluators score against.
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -15,7 +16,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from langsmith import Client
 
-DATASET_NAME = "HR Workshop — Module 3 (agent trajectories)"
+DATASET_PREFIX = os.getenv("DATASET_PREFIX", "")
+DATASET_NAME = f"{DATASET_PREFIX} HR Workshop — Module 3 (agent trajectories)".strip()
 
 # Note: lists/dicts inside example outputs are fine — LangSmith stores them as
 # JSON. Evaluators read them back from reference_outputs.
@@ -23,7 +25,7 @@ EXAMPLES = [
     {
         "inputs": {
             "question": "Please get our new hire Jordan Lee set up: create their email and "
-                        "Slack accounts and order them a laptop."
+            "Slack accounts and order them a laptop."
         },
         "outputs": {
             "expected_trajectory": [
@@ -32,7 +34,11 @@ EXAMPLES = [
                 "create_it_account",
                 "provision_equipment",
             ],
-            "required_tools": ["lookup_employee", "create_it_account", "provision_equipment"],
+            "required_tools": [
+                "lookup_employee",
+                "create_it_account",
+                "provision_equipment",
+            ],
             # The agent must use Jordan's real id (E1007) once it looks them up.
             "expected_employee_id": "E1007",
             "forbidden_tools": ["schedule_orientation"],
@@ -52,7 +58,7 @@ EXAMPLES = [
     {
         "inputs": {
             "question": "Alex Chen starts soon — set up their VPN access, order a laptop and a "
-                        "monitor, and schedule their orientation for 2026-07-01."
+            "monitor, and schedule their orientation for 2026-07-01."
         },
         "outputs": {
             "expected_trajectory": [
@@ -63,7 +69,10 @@ EXAMPLES = [
                 "schedule_orientation",
             ],
             "required_tools": [
-                "lookup_employee", "create_it_account", "provision_equipment", "schedule_orientation",
+                "lookup_employee",
+                "create_it_account",
+                "provision_equipment",
+                "schedule_orientation",
             ],
             "expected_employee_id": "E1009",
             "forbidden_tools": [],
@@ -79,7 +88,11 @@ EXAMPLES = [
             "expected_trajectory": ["lookup_employee", "get_benefits_info"],
             "required_tools": ["lookup_employee", "get_benefits_info"],
             "expected_employee_id": "E1007",
-            "forbidden_tools": ["create_it_account", "provision_equipment", "schedule_orientation"],
+            "forbidden_tools": [
+                "create_it_account",
+                "provision_equipment",
+                "schedule_orientation",
+            ],
         },
     },
 ]

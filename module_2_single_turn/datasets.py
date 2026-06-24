@@ -8,6 +8,7 @@ ground truth for both deterministic checks (expected_facts) and LLM judges
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -15,11 +16,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from langsmith import Client
 
-DATASET_NAME = "HR Workshop — Module 2 (single-turn Q&A)"
+DATASET_PREFIX = os.getenv("DATASET_PREFIX", "")
+DATASET_NAME = f"{DATASET_PREFIX} HR Workshop — Module 2 (single-turn Q&A)".strip()
 
 EXAMPLES = [
     {
-        "inputs": {"question": "How many vacation days do new full-time employees get?"},
+        "inputs": {
+            "question": "How many vacation days do new full-time employees get?"
+        },
         "outputs": {
             "policy_topic": "vacation",
             "expected_facts": ["15", "1.25"],
@@ -67,7 +71,9 @@ EXAMPLES = [
         },
     },
     {
-        "inputs": {"question": "How long do I have to submit an expense report, and do I need receipts?"},
+        "inputs": {
+            "question": "How long do I have to submit an expense report, and do I need receipts?"
+        },
         "outputs": {
             "policy_topic": "expenses",
             "expected_facts": ["30 days", "$25"],

@@ -14,7 +14,7 @@ dependencies = [
     # Workshop utilities
     "python-dotenv>=1.0",
     "pydantic>=2.0",
-    "aipe>=1.17.0",
+    "aipe[pii]>=1.17.0",
 ]
 
 [project.optional-dependencies]
