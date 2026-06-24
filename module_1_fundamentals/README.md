@@ -51,7 +51,7 @@ This distinction drives the rest of the workshop:
 
 ```bash
 # from the repo root, with your .env set up
-python module_1_fundamentals/01_first_eval.py
+uv run python module_1_fundamentals/01_first_eval.py
 ```
 
 `01_first_eval.py` is deliberately tiny: a 3-example dataset, the HR agent as

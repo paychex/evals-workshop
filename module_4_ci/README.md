@@ -20,11 +20,11 @@ a single LLM-judge call can be noisy but the mean is stable.
 
 ```bash
 # Per-example tests
-pytest module_4_ci/test_evals.py -v --langsmith-output
+uv run pytest module_4_ci/test_evals.py -v --langsmith-output
 
 # Aggregate gates (exit non-zero on regression)
-python module_4_ci/ci_gate.py --suite single_turn
-python module_4_ci/ci_gate.py --suite agent
+uv run python module_4_ci/ci_gate.py --suite single_turn
+uv run python module_4_ci/ci_gate.py --suite agent
 ```
 
 ## The GitHub Actions workflow

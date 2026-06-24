@@ -11,6 +11,7 @@ Run:  python module_1_fundamentals/01_first_eval.py
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -23,7 +24,8 @@ from config import require_langsmith
 from hr_agent import run_agent
 from hr_agent.trajectory import final_response
 
-DATASET_NAME = "HR Workshop — Module 1 (first eval)"
+DATASET_PREFIX = os.getenv("DATASET_PREFIX", "")
+DATASET_NAME = f"{DATASET_PREFIX} HR Workshop — Module 1 (first eval)".strip()
 
 
 # --- 1. DATASET ----------------------------------------------------------

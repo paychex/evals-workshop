@@ -22,13 +22,13 @@ groundedness) are the building blocks you'll reuse in the harder agent evals.
 
 ```bash
 # Unit-test the deterministic evaluators first — no API key needed.
-python module_2_single_turn/deterministic_evals.py
+uv run python module_2_single_turn/deterministic_evals.py
 
 # The full single-turn experiment (deterministic + LLM judges).
-python module_2_single_turn/run_eval.py
+uv run python module_2_single_turn/run_eval.py
 
 # The structured-output shape-validation experiment.
-python module_2_single_turn/structured_output.py
+uv run python module_2_single_turn/structured_output.py
 ```
 
 ## Key ideas to land

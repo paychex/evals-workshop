@@ -11,6 +11,17 @@ from functools import lru_cache
 
 from dotenv import load_dotenv
 
+# Trust the platform's native certificate store at runtime (mirrors uv's
+# --system-certs). Without this, HTTPS clients that bundle their own CA list
+# (e.g. LangSmith via requests/certifi) fail with CERTIFICATE_VERIFY_FAILED
+# behind a corporate TLS-inspecting proxy. truststore ships with aipe.
+try:
+    import truststore
+
+    truststore.inject_into_ssl()
+except Exception:  # pragma: no cover - best effort; fall back to certifi
+    pass
+
 # Load .env once, on import, for every script in the workshop.
 # override=True makes the workshop's .env authoritative over ambient shell/IDE
 # environment variables. This matters because some shells/IDEs export keys like
@@ -19,8 +30,12 @@ from dotenv import load_dotenv
 # which then surfaces as a confusing 403 from the model provider/gateway.
 load_dotenv(override=True)
 
-# init_chat_model string form: "<provider>:<model>".
-DEFAULT_MODEL = "anthropic:claude-sonnet-4-5"
+# init_chat_model string form: just the model name; the provider is supplied
+# separately via MODEL_PROVIDER below (Paychex MaaS routes OpenAI/Azure models).
+DEFAULT_MODEL = "gpt-5.4-mini"
+
+# Provider used by aipe's MaaS wrappers. Azure OpenAI hosts our OpenAI models.
+MODEL_PROVIDER = os.getenv("WORKSHOP_MODEL_PROVIDER", "azure_openai")
 
 # The agent under test. Override with WORKSHOP_MODEL.
 AGENT_MODEL = os.getenv("WORKSHOP_MODEL", DEFAULT_MODEL)
@@ -38,9 +53,9 @@ def get_judge(model: str = JUDGE_MODEL):
     Temperature 0 for the most deterministic grading we can get. Cached so
     repeated evaluator calls reuse one client.
     """
-    from langchain.chat_models import init_chat_model
+    from aipe import init_payx_chat_model
 
-    return init_chat_model(model, temperature=0)
+    return init_payx_chat_model(model, model_provider=MODEL_PROVIDER, temperature=0)
 
 
 def require_langsmith() -> None:

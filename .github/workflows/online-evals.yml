@@ -20,18 +20,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.11"
-          cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: uv sync --system-certs
 
       # Score the last 50 production traces and gate on drift vs baseline.json.
       # A drifted metric exits non-zero, which fails this step and the run.
       - name: Production eval monitor
-        run: python module_7_production_ci/monitor.py --limit 50
+        run: uv run python module_7_production_ci/monitor.py --limit 50
 
       # Optional: turn a failed monitor into a real alert. Uncomment and wire to
       # your channel. `if: failure()` runs this only when the monitor flagged drift.

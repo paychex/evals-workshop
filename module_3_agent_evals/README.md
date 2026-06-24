@@ -34,11 +34,11 @@ messages and pulls each `tool_call`'s name and args.
 
 ```bash
 # Self-test the deterministic evaluators — no API key needed.
-python module_3_agent_evals/trajectory_evals.py
-python module_3_agent_evals/tool_evals.py
+uv run python module_3_agent_evals/trajectory_evals.py
+uv run python module_3_agent_evals/tool_evals.py
 
 # The full agent experiment.
-python module_3_agent_evals/run_eval.py
+uv run python module_3_agent_evals/run_eval.py
 ```
 
 ## Key ideas to land

@@ -56,13 +56,13 @@ offline dataset — it's a real failure, not a hypothetical one.
 
 ```bash
 # Self-test the deterministic reference-free evaluators — no API key needed.
-python module_5_online_evals/reference_free_evals.py
+uv run python module_5_online_evals/reference_free_evals.py
 
 # 1. Generate live traces (needs LANGSMITH + model keys).
-python module_5_online_evals/production_traffic.py
+uv run python module_5_online_evals/production_traffic.py
 
 # 2. Score those traces and write feedback back onto them.
-python module_5_online_evals/score_traces.py
+uv run python module_5_online_evals/score_traces.py
 #    --deterministic-only   skip the LLM judges (no model cost)
 #    --limit 50             score more traces
 ```

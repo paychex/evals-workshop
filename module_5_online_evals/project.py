@@ -10,5 +10,10 @@ override for pointing at your real production project.
 
 from __future__ import annotations
 
+import os
+
 # The dedicated project that stands in for "production" in this workshop.
-PRODUCTION_PROJECT = "hr-agent-production"
+# Prefixed with DATASET_PREFIX (e.g. your username) so traces land in a
+# per-user project on a shared LangSmith instance, mirroring the datasets.
+DATASET_PREFIX = os.getenv("DATASET_PREFIX", "")
+PRODUCTION_PROJECT = f"{DATASET_PREFIX} hr-agent-production".strip()
