@@ -5,7 +5,7 @@ around a single example app: an **HR Onboarding agent**. You learn the app
 once, then spend the rest of the workshop on evaluation technique — from a
 first single-turn eval all the way to monitoring evals in production.
 
-Stack: **Python + LangChain (`create_agent`) + LangSmith**.
+Stack: **Python + LangChain (`create_payx_agent`) + LangSmith**.
 
 The workshop runs in two sessions:
 
@@ -63,6 +63,9 @@ produces the same tool output. That reproducibility is what makes evaluation
 meaningful — you measure the *model's* behavior, not flaky downstream systems.
 
 ---
+
+## Links
+Langsmith Dev Instance - [https://langchain.paychexai.dev.azure.payx/](https://langchain.paychexai.dev.azure.payx/)
 
 ## Setup
 
